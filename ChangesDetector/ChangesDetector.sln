@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangesDetector", "ChangesDetector.csproj", "{B82CCBAF-ACA7-4679-A202-1A94EACDB22F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangesDetectorConsole", "..\ChangesDetectorConsole\ChangesDetectorConsole.csproj", "{0C22D411-1628-45DE-A3BE-62BA7D32252C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B82CCBAF-ACA7-4679-A202-1A94EACDB22F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82CCBAF-ACA7-4679-A202-1A94EACDB22F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82CCBAF-ACA7-4679-A202-1A94EACDB22F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82CCBAF-ACA7-4679-A202-1A94EACDB22F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C22D411-1628-45DE-A3BE-62BA7D32252C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C22D411-1628-45DE-A3BE-62BA7D32252C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C22D411-1628-45DE-A3BE-62BA7D32252C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C22D411-1628-45DE-A3BE-62BA7D32252C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A2A7493-1DA9-4130-AC1D-DB6ACA84B54A}
+	EndGlobalSection
+EndGlobal
