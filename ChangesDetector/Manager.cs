@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChangesDetector.model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,13 @@ namespace ChangesDetector
     {
         public void Test()
         {
+            Uri url = new Uri("http://ponowemu.pl");
+            IDownloader downloader = new WebpageDownloader();
+            var result = downloader.Download(url);
+
+            IDetector detector = new Detector();
+            detector.Detect(result, result);
+
 
         }
     }
