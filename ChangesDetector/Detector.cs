@@ -45,15 +45,15 @@ namespace ChangesDetector.model
                 switch (line.Type)
                 {
                     case ChangeType.Inserted:
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write("+++ ");
                         break;
                     case ChangeType.Deleted:
-                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write("--- ");
                         break;
                     default:
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.BackgroundColor = ConsoleColor.Yellow;
                         Console.Write("  ");
                         break;
                 }
