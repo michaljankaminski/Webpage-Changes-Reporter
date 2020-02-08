@@ -11,6 +11,11 @@ namespace ChangesDetector.model
     }
     class Detector : IDetector
     {
+        /// <summary>
+        /// Single method responsible for detecting
+        /// changes between to complete versions of webpage
+        /// </summary>
+        /// <returns></returns>
         public bool Detect()
         {
             throw new NotImplementedException();
