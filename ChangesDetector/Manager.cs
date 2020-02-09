@@ -17,7 +17,7 @@ namespace ChangesDetector
         public void Config(out MailConfiguration mailConfiguration)
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("configs/appsettings.json")
                 .Build();
             var mailConfig = configuration.GetSection("mail");
 
