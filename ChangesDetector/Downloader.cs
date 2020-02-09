@@ -74,7 +74,8 @@ namespace ChangesDetector
             return new Webpage
             {
                 Components = components,
-                WebpageUrl = url.AbsoluteUri
+                WebpageUrl = url.AbsoluteUri,
+                Sitemap = siteMap
             };
         }
     }
