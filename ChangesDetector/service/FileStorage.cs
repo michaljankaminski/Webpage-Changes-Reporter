@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ChangesDetector.service
 {
@@ -14,6 +15,7 @@ namespace ChangesDetector.service
         int GetNumberOfFiles();
         string GetFileContent(int key);
         int CreateFileWithContent(string fileName, string content);
+        string CleanFileName(string fileName);
     }
     public class FileStorage : IFileStorage
     {
@@ -28,7 +30,7 @@ namespace ChangesDetector.service
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "PoNowemu",
                 "ChangesDetector");
-            PagesPath = Path.Combine(AppDataPath, "Webpages");
+            PagesPath = Path.Combine(AppDataPath, "Webpages/");
             Directory.CreateDirectory(PagesPath);
             AddLocalFiles();
         }
@@ -110,7 +112,11 @@ namespace ChangesDetector.service
             AddNewFile(PagesPath + fileName, false);
             return fileKey;
         }
-
+        public string CleanFileName(string filename)
+        {
+            Regex pattern = new Regex(@"[:\/.]");
+            return pattern.Replace(filename, "_");
+        }
         private void AddLocalFiles()
         {
             foreach (var file in Directory.GetFiles(PagesPath))

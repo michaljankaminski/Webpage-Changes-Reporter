@@ -11,6 +11,9 @@ namespace ChangesDetectorConsole
     {
         static async Task Main(string[] args)
         {
+            Manager mn = new Manager();
+            mn.Test();
+            Console.WriteLine("Finished");
 
             var host = new HostBuilder()
                  .ConfigureServices((hostContext, services) =>
@@ -22,9 +25,7 @@ namespace ChangesDetectorConsole
 
             await host.RunAsync();
 
-            Manager mn = new Manager();
-            mn.Test();
-            Console.WriteLine("Finished");
+            
         }
     }
 }
