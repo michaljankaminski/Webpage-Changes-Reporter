@@ -26,15 +26,16 @@ namespace ChangesDetector.model
         /// First step is comparing the sitemaps
         /// overall number of sites, names, etc.
         /// </summary>
-        private void CompareSitemaps(IEnumerable<Uri> localCopy, IEnumerable<Uri> remoteCopy)
+        private void CompareSitemaps<T>(IEnumerable<T> localCopy, IEnumerable<T> remoteCopy)
+            where T : IComparable
         {
             var result = localCopy
                 .Concat(remoteCopy)
                 .Except(localCopy.Intersect(remoteCopy))
                 .Select(a => new
                 {
-                    Value = a, //get value
-                    List = localCopy.Any(c => c == a) ? "Local copy" : "Remote version"
+                    Value = a, 
+                    List = localCopy.Any(c => c.Equals(a)) ? "Local copy" : "Remote version"
                 });
 
             foreach (var d in result)
@@ -64,7 +65,7 @@ namespace ChangesDetector.model
                         Console.Write("--- ");
                         break;
                     default:
-                        Console.BackgroundColor = ConsoleColor.Yellow;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write("  ");
                         break;
                 }
