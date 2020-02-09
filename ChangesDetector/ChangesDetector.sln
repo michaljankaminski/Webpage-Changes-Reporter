@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangesDetector", "ChangesD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangesDetectorConsole", "..\ChangesDetectorConsole\ChangesDetectorConsole.csproj", "{0C22D411-1628-45DE-A3BE-62BA7D32252C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangesDetectorTests", "..\ChangesDetectorTests\ChangesDetectorTests.csproj", "{4DCD9755-6ED7-493C-B13E-C1A3569E62D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangesDetectorTests", "..\ChangesDetectorTests\ChangesDetectorTests.csproj", "{4DCD9755-6ED7-493C-B13E-C1A3569E62D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

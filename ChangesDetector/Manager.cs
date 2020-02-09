@@ -10,10 +10,10 @@ namespace ChangesDetector
         private readonly MailConfiguration _mailConfiguration;
         public Manager()
         {
-            Config(out _mailConfiguration);
+            Configure(out _mailConfiguration);
         }
 
-        public void Config(out MailConfiguration mailConfiguration)
+        public void Configure(out MailConfiguration mailConfiguration)
         {
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("configs/appsettings.json")
@@ -30,6 +30,17 @@ namespace ChangesDetector
                 SslSmtp = Convert.ToBoolean(mailConfig.GetSection("sslSmtp").Value)
             };
         }
+
+        public bool AddNewWebpageToReport()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckIfWebpageHasChanged()
+        {
+            throw new NotImplementedException();
+        }
+
 
         public void Test()
         {

@@ -40,7 +40,7 @@ namespace ChangesDetector.module
             else
                 return false;
         }
-        private IEnumerable<string> GetSitemap(HtmlDocument mainPage)
+        private IEnumerable<string> GetSiteMap(HtmlDocument mainPage)
         {
             IList<HtmlNode> siteMap = new List<HtmlNode>();
 
@@ -75,7 +75,7 @@ namespace ChangesDetector.module
         public Webpage Download(Uri url, bool remote = true)
         {
             var htmlDocument = _webBrowser.Load(url);
-            var siteMap = GetSitemap(htmlDocument);
+            var siteMap = GetSiteMap(htmlDocument);
 
             IList<WebpageComponent> components = new List<WebpageComponent>
             {
