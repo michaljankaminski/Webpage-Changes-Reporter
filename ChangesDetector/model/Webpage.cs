@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ChangesDetector.model
 {
@@ -8,6 +6,7 @@ namespace ChangesDetector.model
     {
         public string WebpageUrl { get; set; }
         public IEnumerable<Header> Headers { get; set; }
+        public IEnumerable<string> Sitemap { get; set; }
         public IEnumerable<WebpageComponent> Components { get; set; }
     }
 }

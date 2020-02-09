@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ChangesDetector
+﻿namespace ChangesDetector.interfaces
 {
     interface IReporter
     {

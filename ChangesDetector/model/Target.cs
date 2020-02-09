@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChangesDetector.model
+﻿namespace ChangesDetector.model
 {
     public enum Target
     {
