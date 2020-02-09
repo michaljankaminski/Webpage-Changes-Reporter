@@ -7,6 +7,6 @@ namespace ChangesDetector.model
         public string WebpageUrl { get; set; }
         public IEnumerable<Header> Headers { get; set; }
         public IEnumerable<string> Sitemap { get; set; }
-        public IEnumerable<WebpageComponent> Components { get; set; }
+        public IList<WebpageComponent> Components { get; set; }
     }
 }
