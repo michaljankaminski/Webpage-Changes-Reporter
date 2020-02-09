@@ -2,13 +2,12 @@
 using ChangesDetector.model;
 using ChangesDetector.service;
 using MimeKit;
+using MimeKit.Text;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using MimeKit.Text;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
-namespace ChangesDetector
+namespace ChangesDetector.module
 {
     interface IEmailReporter: IReporter
     {
@@ -68,7 +67,6 @@ namespace ChangesDetector
                 Logger.Instance.Log(e.ToString());
                 return false;
             }
-
         }
 
     }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ChangesDetector
+namespace ChangesDetector.module
 {
     interface IDownloader
     {
@@ -64,25 +64,27 @@ namespace ChangesDetector
                 };
             }
         }
+
         private void SaveWebpage(Webpage webpage)
         {
             foreach (var component in webpage.Components)
                 _fileStorage
                    .CreateFileWithContent(_fileStorage.CleanFileName(component.AbsolutePath.OriginalString), component.SourceCode);
         }
+
         public Webpage Download(Uri url, bool remote = true)
         {
             var htmlDocument = _webBrowser.Load(url);
             var siteMap = GetSitemap(htmlDocument);
 
-            IList<WebpageComponent> components = new List<WebpageComponent>();
-
-            components.Add(
+            IList<WebpageComponent> components = new List<WebpageComponent>
+            {
                 new WebpageComponent
                 {
                     AbsolutePath = url,
                     SourceCode = htmlDocument.Text
-                });
+                }
+            };
 
             foreach (var component in GetWebpageComponents(url, siteMap))
                 components.Add(component);

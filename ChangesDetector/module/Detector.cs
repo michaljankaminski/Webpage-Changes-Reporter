@@ -4,9 +4,9 @@ using DiffPlex.DiffBuilder.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using ChangesDetector.model;
 
-namespace ChangesDetector.model
+namespace ChangesDetector.module
 {
     interface IDetector
     {

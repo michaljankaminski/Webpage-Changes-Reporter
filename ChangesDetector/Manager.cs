@@ -1,9 +1,7 @@
 ﻿using ChangesDetector.model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+using System;
+using ChangesDetector.module;
 
 namespace ChangesDetector
 {
@@ -14,6 +12,7 @@ namespace ChangesDetector
         {
             Config(out _mailConfiguration);
         }
+
         public void Config(out MailConfiguration mailConfiguration)
         {
             var configuration = new ConfigurationBuilder()
@@ -30,8 +29,8 @@ namespace ChangesDetector
                 PortSmtp = Convert.ToInt32(mailConfig.GetSection("portSmtp").Value),
                 SslSmtp = Convert.ToBoolean(mailConfig.GetSection("sslSmtp").Value)
             };
-
         }
+
         public void Test()
         {
             Uri url = new Uri("http://ponowemu.pl");
@@ -40,9 +39,8 @@ namespace ChangesDetector
             var result2 = downloader.Download(new Uri("https://sikoraauxilium.com/"), false);
             IDetector detector = new Detector();
             detector.Detect(result, result2);
-
-
         }
+
         public void Test2()
         {
             for (int i = 0; i <= 10; i++)

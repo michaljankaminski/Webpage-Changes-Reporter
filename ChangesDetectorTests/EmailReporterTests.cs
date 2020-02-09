@@ -1,9 +1,9 @@
-﻿using System;
-using ChangesDetector;
-using ChangesDetector.model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using ChangesDetector.model;
+using ChangesDetector.module;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace ChangesDetectorTests
 {
