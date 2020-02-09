@@ -26,9 +26,21 @@ namespace ChangesDetector.model
         /// First step is comparing the sitemaps
         /// overall number of sites, names, etc.
         /// </summary>
-        private void CompareSitemaps()
+        private void CompareSitemaps(IEnumerable<Uri> localCopy, IEnumerable<Uri> remoteCopy)
         {
-            throw new NotImplementedException();
+            var result = localCopy
+                .Concat(remoteCopy)
+                .Except(localCopy.Intersect(remoteCopy))
+                .Select(a => new
+                {
+                    Value = a, //get value
+                    List = localCopy.Any(c => c == a) ? "Local copy" : "Remote version"
+                });
+
+            foreach (var d in result)
+            {
+                Console.WriteLine("Item: '{0}' found on: '{1}'", d.Value, d.List);
+            }
         }
         /// <summary>
         /// Method for comparing sources between local copy
@@ -39,7 +51,6 @@ namespace ChangesDetector.model
         private void CompareSources(string localCopy, string remoteCopy)
         {
             var diff = _inlineDiffBuilder.BuildDiffModel(localCopy, remoteCopy);
-
             foreach (var line in diff.Lines)
             {
                 switch (line.Type)
@@ -57,7 +68,6 @@ namespace ChangesDetector.model
                         Console.Write("  ");
                         break;
                 }
-
                 Console.WriteLine(line.Text);
             }
         }
@@ -76,6 +86,7 @@ namespace ChangesDetector.model
         /// <returns></returns>
         public bool Detect(Webpage localCopy, Webpage remoteVersion)
         {
+            CompareSitemaps(localCopy.Sitemap, remoteVersion.Sitemap);
             CompareSources(localCopy.Components.First().SourceCode, remoteVersion.Components.Last().SourceCode);
 
             return true;
