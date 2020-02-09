@@ -1,4 +1,5 @@
 ﻿using ChangesDetector.model;
+using ChangesDetector.service;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,17 @@ namespace ChangesDetector
 {
     interface IDownloader
     {
-        public Webpage Download(Uri url);
+        public Webpage Download(Uri url, bool remote);
     }
     class WebpageDownloader : IDownloader
     {
         private readonly HtmlWeb _webBrowser;
+        private readonly IFileStorage _fileStorage;
 
         public WebpageDownloader()
         {
             _webBrowser = new HtmlWeb();
+            _fileStorage = new FileStorage();
         }
         /// <summary>
         /// Method used for validating the url, whether it should
@@ -56,26 +59,45 @@ namespace ChangesDetector
 
                 yield return new WebpageComponent
                 {
-                    SourceCode = subpageDocument.Text
+                    SourceCode = subpageDocument.Text,
+                    AbsolutePath = subpageUri
                 };
             }
         }
-        public Webpage Download(Uri url)
+        private void SaveWebpage(Webpage webpage)
+        {
+            foreach (var component in webpage.Components)
+                _fileStorage
+                   .CreateFileWithContent(_fileStorage.CleanFileName(component.AbsolutePath.OriginalString), component.SourceCode);
+        }
+        public Webpage Download(Uri url, bool remote = true)
         {
             var htmlDocument = _webBrowser.Load(url);
             var siteMap = GetSitemap(htmlDocument);
 
             IList<WebpageComponent> components = new List<WebpageComponent>();
 
+            components.Add(
+                new WebpageComponent
+                {
+                    AbsolutePath = url,
+                    SourceCode = htmlDocument.Text
+                });
+
             foreach (var component in GetWebpageComponents(url, siteMap))
                 components.Add(component);
 
-            return new Webpage
+            var wp = new Webpage
             {
                 Components = components,
                 WebpageUrl = url.AbsoluteUri,
                 Sitemap = siteMap
             };
+
+            if (!remote)
+                SaveWebpage(wp);
+
+            return wp;
         }
     }
 }

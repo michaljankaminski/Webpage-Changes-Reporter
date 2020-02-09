@@ -36,8 +36,8 @@ namespace ChangesDetector
         {
             Uri url = new Uri("http://ponowemu.pl");
             IDownloader downloader = new WebpageDownloader();
-            var result = downloader.Download(url);
-            var result2 = downloader.Download(new Uri("https://sikoraauxilium.com/"));
+            var result = downloader.Download(url, false);
+            var result2 = downloader.Download(new Uri("https://sikoraauxilium.com/"), false);
             IDetector detector = new Detector();
             detector.Detect(result, result2);
 
