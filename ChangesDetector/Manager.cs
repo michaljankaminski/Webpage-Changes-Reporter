@@ -12,10 +12,7 @@ namespace ChangesDetector
         private readonly MailConfiguration _mailConfiguration;
         public Manager()
         {
-            MailConfiguration mailConfig;
-            Config(out mailConfig);
-
-            _mailConfiguration = mailConfig;
+            Config(out _mailConfiguration);
         }
         public void Config(out MailConfiguration mailConfiguration)
         {
