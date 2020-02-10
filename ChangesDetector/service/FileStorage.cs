@@ -62,13 +62,11 @@ namespace ChangesDetector.service
             }
             catch (FileNotFoundException ex)
             {
-                Logger.Instance.Log(ex.ToString());
-                return false;
+                throw;
             }
             catch (Exception ex)
             {
-                Logger.Instance.Log(ex.ToString());
-                return false;
+                throw;
             }
         }
 
@@ -108,13 +106,12 @@ namespace ChangesDetector.service
                 throw new KeyNotFoundException();
             }
 
-            var comp = storage.CheckIfFileNameExist(componentName);
-            if (comp == null)
+            if (!storage.CheckIfFileNameExist(componentName))
             {
                 throw new Exception("Such component does not exist");
             }
 
-            var content = File.ReadAllText(StoredFiles[key].Path + "\\componentName");
+            var content = File.ReadAllText(StoredFiles[key].Path + "\\" + componentName);
             return content;
         }
 
