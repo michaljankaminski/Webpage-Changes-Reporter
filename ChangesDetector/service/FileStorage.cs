@@ -19,12 +19,16 @@ namespace ChangesDetector.service
         string CleanFileName(string fileName);
         string GetAppStateFile();
         bool SaveAppStateFile(string content);
+        string CreateTempFolder();
+        void CleanTempFolder();
     }
+
     public class FileStorage : IFileStorage
     {
         private string AppDataPath { get; set; }
         private string PagesPath { get; set; }
         private string AppStatePath { get; set; }
+        private string TempPath { get; set; }
         private List<StorageFile> StoredFiles { get; set; } = new List<StorageFile>();
         private int CurrentIndex { get; set; } = 0;
 
@@ -36,6 +40,7 @@ namespace ChangesDetector.service
                 "ChangesDetector");
             AppStatePath = AppDataPath + "\\AppState.json";
             PagesPath = Path.Combine(AppDataPath, "Webpages\\");
+            TempPath = Path.Combine(AppDataPath, "Temp\\");
             Directory.CreateDirectory(PagesPath);
             AddLocalFiles();
         }
@@ -157,6 +162,16 @@ namespace ChangesDetector.service
                 throw;
             }
 
+        }
+
+        public string CreateTempFolder()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CleanTempFolder()
+        {
+            throw new NotImplementedException();
         }
 
         private void AddLocalFiles()
