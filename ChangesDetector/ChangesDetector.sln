@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangesDetectorConsole", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangesDetectorTests", "..\ChangesDetectorTests\ChangesDetectorTests.csproj", "{4DCD9755-6ED7-493C-B13E-C1A3569E62D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangesDetectorWeb", "..\ChangesDetectorWeb\ChangesDetectorWeb.csproj", "{693C8019-5F5C-4359-B023-3F2B0DD72A8B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{4DCD9755-6ED7-493C-B13E-C1A3569E62D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DCD9755-6ED7-493C-B13E-C1A3569E62D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DCD9755-6ED7-493C-B13E-C1A3569E62D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{693C8019-5F5C-4359-B023-3F2B0DD72A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{693C8019-5F5C-4359-B023-3F2B0DD72A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{693C8019-5F5C-4359-B023-3F2B0DD72A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{693C8019-5F5C-4359-B023-3F2B0DD72A8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
