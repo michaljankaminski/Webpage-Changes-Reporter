@@ -33,7 +33,7 @@ namespace ChangesDetector.service
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "PoNowemu",
                 "ChangesDetector");
-            AppStatePath = AppDataPath + "AppState.json";
+            AppStatePath = AppDataPath + "\\AppState.json";
             PagesPath = Path.Combine(AppDataPath, "Webpages/");
             Directory.CreateDirectory(PagesPath);
             AddLocalFiles();
@@ -126,7 +126,8 @@ namespace ChangesDetector.service
         {
             if (!File.Exists(AppStatePath))
             {
-                File.Create(AppStatePath);
+                var str = File.Create(AppStatePath);
+                str.Dispose();
                 return string.Empty;
             }
             return File.ReadAllText(AppStatePath);
@@ -141,8 +142,7 @@ namespace ChangesDetector.service
             }
             catch (Exception e)
             {
-                Logger.Instance.Log(e.ToString());
-                return false;
+                throw;
             }
 
         }
