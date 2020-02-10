@@ -53,6 +53,7 @@ namespace ChangesDetector.module
             try
             {
                 State = JsonConvert.DeserializeObject<AppStateConfiguration>(content);
+                SetIdInStates();
                 return true;
             }
             catch (Exception e)
@@ -90,6 +91,20 @@ namespace ChangesDetector.module
         public AppStateConfiguration GetState()
         {
             return State;
+        }
+
+        private void SetIdInStates()
+        {
+            foreach (var storage in _fileStorage.GetStorages())
+            {
+                foreach (var wp in State.SavedWebpages)
+                {
+                    if (storage.Name == wp.Name)
+                    {
+                        wp.Id = storage.Key;
+                    }
+                }   
+            }
         }
     }
 }
