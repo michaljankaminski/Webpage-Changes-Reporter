@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ChangesDetector.model.state;
 using ChangesDetector.service;
 using Newtonsoft.Json;
@@ -10,11 +11,11 @@ namespace ChangesDetector.module
     {
         bool SaveCurrentState(AppStateConfiguration state = null);
         AppStateConfiguration GetState();
-        void AddSavedWebpage(int index);
+        void AddSavedWebpage(SavedWebpage webpage);
         bool RemoveSavedWebpage(int index);
     }
 
-    public class AppStateManager:IAppStateManager
+    public class AppStateManager : IAppStateManager
     {
         private readonly IFileStorage _fileStorage;
         private AppStateConfiguration State { get; set; }
@@ -41,7 +42,7 @@ namespace ChangesDetector.module
         {
             if (state == null)
                 state = State;
-            var stateJson = JsonConvert.SerializeObject(state,Formatting.Indented);
+            var stateJson = JsonConvert.SerializeObject(state, Formatting.Indented);
             _fileStorage.SaveAppStateFile(stateJson.ToString());
             State = state;
             return true;
@@ -63,14 +64,27 @@ namespace ChangesDetector.module
             return false;
         }
 
-        public void AddSavedWebpage(int index)
+        public void AddSavedWebpage(SavedWebpage webpage)
         {
-            throw new NotImplementedException();
+            State.SavedWebpages.Add(webpage);
+            SaveCurrentState();
         }
 
         public bool RemoveSavedWebpage(int index)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var item = State.SavedWebpages.Where(s => s.Id == index).SingleOrDefault();
+                if (item != null)
+                    State.SavedWebpages.Remove(item);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public AppStateConfiguration GetState()

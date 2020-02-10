@@ -20,18 +20,36 @@ namespace ChangesDetectorWeb.Controllers
             _logger = logger;
             _manager = manager;
         }
-       
+
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Add(string webpageName, string webpageUrl)
+        public IActionResult Add(string name, string url, int updateFrequency)
         {
-            var url = new Uri(webpageUrl);
-            _manager.AddNewWebpageToReport(url);
-            
+            int id = 1;
+            var lastItem = _manager.GetWebpages().LastOrDefault();
+            if (lastItem != null)
+                id = lastItem.Id + 1;
+
+            _manager.AddNewWebpageToReport(new ChangesDetector.model.state.SavedWebpage
+            {
+                Active = true,
+                Name = name,
+                Id = id,
+                Url = url,
+                LastUpdate = DateTime.Now,
+                UpdateFrequency = updateFrequency
+            });
+
+            return RedirectToAction("Index", "Home");
+        }
+       
+        public IActionResult Delete(int id)
+        {
+            _manager.RemoveWebpage(id);
             return RedirectToAction("Index", "Home");
         }
     }

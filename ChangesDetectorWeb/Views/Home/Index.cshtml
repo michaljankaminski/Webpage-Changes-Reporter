@@ -14,18 +14,18 @@
                     <th>Lp. </th>
                     <th>Nazwa strony</th>
                     <th>Adres url</th>
-                    <th>Stan</th>
+                    <th>Ostatnia aktualizacja</th>
                     <th></th>
                 </tr>
-                @foreach(var el in ViewData["webpages"] as IList<ChangesDetector.model.Webpage>)
+                @foreach(var el in ViewData["webpages"] as IList<ChangesDetector.model.state.SavedWebpage>)
                 {
                     <tr>
-                        <th>@i</th>
-                        <th>@el.WebpageName</th>
-                        <th>@el.WebpageUrl</th>
-                        <th></th>
+                        <th>@el.Id</th>
+                        <th>@el.Name</th>
+                        <th>@el.Url</th>
+                        <th>@el.LastUpdate</th>
                         <th>
-                            <a class="btn btn-danger" asp-controller="Website" asp-action="Delete" asp-route-name="@el.WebpageName">Usuń</a>
+                            <a class="btn btn-danger" asp-controller="Website" asp-action="Delete" asp-route-id="@el.Id">Usuń</a>
                         </th>
                     </tr>
                     i = i + 1; 

@@ -10,7 +10,7 @@ namespace ChangesDetector.module
 {
     interface IDownloader
     {
-        public Webpage Download(Uri url, bool remote);
+        public Webpage Download(Uri url, string name,  bool remote);
     }
     class WebpageDownloader : IDownloader
     {
@@ -67,12 +67,13 @@ namespace ChangesDetector.module
 
         private void SaveWebpage(Webpage webpage)
         {
+            int key = _fileStorage.CreateNewStorage(webpage.WebpageName);
             foreach (var component in webpage.Components)
                 _fileStorage
-                   .CreateFileWithContent(_fileStorage.CleanFileName(component.AbsolutePath.OriginalString), component.SourceCode);
+                   .CreateFileWithContent(key,_fileStorage.CleanFileName(component.AbsolutePath.OriginalString), component.SourceCode);
         }
 
-        public Webpage Download(Uri url, bool remote = true)
+        public Webpage Download(Uri url, string webpageName, bool remote = true)
         {
             var htmlDocument = _webBrowser.Load(url);
             var siteMap = GetSiteMap(htmlDocument);
@@ -93,7 +94,8 @@ namespace ChangesDetector.module
             {
                 Components = components,
                 WebpageUrl = url.AbsoluteUri,
-                Sitemap = siteMap
+                Sitemap = siteMap,
+                WebpageName = webpageName
             };
 
             if (!remote)
