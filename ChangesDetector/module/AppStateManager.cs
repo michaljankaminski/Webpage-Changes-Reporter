@@ -10,6 +10,8 @@ namespace ChangesDetector.module
     {
         bool SaveCurrentState(AppStateConfiguration state = null);
         AppStateConfiguration GetState();
+        void AddSavedWebpage(int index);
+        bool RemoveSavedWebpage(int index);
     }
 
     public class AppStateManager:IAppStateManager
@@ -59,6 +61,16 @@ namespace ChangesDetector.module
             }
 
             return false;
+        }
+
+        public void AddSavedWebpage(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveSavedWebpage(int index)
+        {
+            throw new NotImplementedException();
         }
 
         public AppStateConfiguration GetState()
