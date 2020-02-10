@@ -61,9 +61,9 @@ namespace ChangesDetector
                 return false;
         }
 
-        public bool CheckIfWebpageHasChanged(SavedWebpage webpage)
+        public PageChanges CheckIfWebpageHasChanged(int webpageId, string tempPath)
         {
-            return true;
+            throw new NotImplementedException();
         }
 
         public IEnumerable<SavedWebpage> GetWebpages()
