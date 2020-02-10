@@ -38,7 +38,7 @@ namespace ChangesDetector
             IDownloader downloader = new WebpageDownloader();
             downloader.Download(url, false);
 
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool CheckIfWebpageHasChanged()

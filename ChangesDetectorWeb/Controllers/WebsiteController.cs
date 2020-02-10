@@ -29,7 +29,9 @@ namespace ChangesDetectorWeb.Controllers
         [HttpPost]
         public IActionResult Add(string webpageName, string webpageUrl)
         {
-            //_manager.AddNewWebpageToReport(string webpageName, string webpageUrl);
+            var url = new Uri(webpageUrl);
+            _manager.AddNewWebpageToReport(url);
+            
             return RedirectToAction("Index", "Home");
         }
     }
