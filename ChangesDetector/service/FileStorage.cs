@@ -16,11 +16,14 @@ namespace ChangesDetector.service
         string GetFileContent(int key);
         int CreateFileWithContent(string fileName, string content);
         string CleanFileName(string fileName);
+        string GetAppStateFile();
+        bool SaveAppStateFile(string content);
     }
     public class FileStorage : IFileStorage
     {
         private string AppDataPath { get; set; }
         private string PagesPath { get; set; }
+        private string AppStatePath { get; set; }
         private List<StorageFile> StoredFiles { get; set; } = new List<StorageFile>();
         private int CurrentIndex { get; set; } = 0;
 
@@ -30,6 +33,7 @@ namespace ChangesDetector.service
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "PoNowemu",
                 "ChangesDetector");
+            AppStatePath = AppDataPath + "AppState.json";
             PagesPath = Path.Combine(AppDataPath, "Webpages/");
             Directory.CreateDirectory(PagesPath);
             AddLocalFiles();
@@ -117,6 +121,32 @@ namespace ChangesDetector.service
             Regex pattern = new Regex(@"[:\/.]");
             return pattern.Replace(filename, "_");
         }
+
+        public string GetAppStateFile()
+        {
+            if (!File.Exists(AppStatePath))
+            {
+                File.Create(AppStatePath);
+                return string.Empty;
+            }
+            return File.ReadAllText(AppStatePath);
+        }
+
+        public bool SaveAppStateFile(string content)
+        {
+            try
+            {
+                File.WriteAllText(AppStatePath, content);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.Instance.Log(e.ToString());
+                return false;
+            }
+
+        }
+
         private void AddLocalFiles()
         {
             foreach (var file in Directory.GetFiles(PagesPath))
