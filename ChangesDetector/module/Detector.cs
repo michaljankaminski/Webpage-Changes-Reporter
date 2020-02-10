@@ -10,7 +10,7 @@ namespace ChangesDetector.module
 {
     interface IDetector
     {
-        public bool Detect(Webpage localCopy, Webpage remoteVersion);
+        public IEnumerable<DiffPaneModel> Detect(Webpage localCopy, Webpage remoteVersion);
         public void Notify();
     }
     class Detector : IDetector
@@ -34,7 +34,7 @@ namespace ChangesDetector.module
                 .Except(localCopy.Intersect(remoteCopy))
                 .Select(a => new
                 {
-                    Value = a, 
+                    Value = a,
                     List = localCopy.Any(c => c.Equals(a)) ? "Local copy" : "Remote version"
                 });
 
@@ -49,28 +49,30 @@ namespace ChangesDetector.module
         /// </summary>
         /// <param name="localCopy"></param>
         /// <param name="remoteCopy"></param>
-        private void CompareSources(string localCopy, string remoteCopy)
+        private DiffPaneModel CompareSources(string localCopy, string remoteCopy)
         {
             var diff = _inlineDiffBuilder.BuildDiffModel(localCopy, remoteCopy);
-            foreach (var line in diff.Lines)
-            {
-                switch (line.Type)
-                {
-                    case ChangeType.Inserted:
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("+++ ");
-                        break;
-                    case ChangeType.Deleted:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("--- ");
-                        break;
-                    default:
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("  ");
-                        break;
-                }
-                Console.WriteLine(line.Text);
-            }
+
+            return diff;
+            //foreach (var line in diff.Lines)
+            //{
+            //    switch (line.Type)
+            //    {
+            //        case ChangeType.Inserted:
+            //            Console.ForegroundColor = ConsoleColor.Green;
+            //            Console.Write("+++ ");
+            //            break;
+            //        case ChangeType.Deleted:
+            //            Console.ForegroundColor = ConsoleColor.Red;
+            //            Console.Write("--- ");
+            //            break;
+            //        default:
+            //            Console.ForegroundColor = ConsoleColor.Yellow;
+            //            Console.Write("  ");
+            //            break;
+            //    }
+            //    Console.WriteLine(line.Text);
+            //}
         }
         /// <summary>
         /// Method for comparing the http headers obtained
@@ -85,12 +87,25 @@ namespace ChangesDetector.module
         /// changes between to complete versions of webpage
         /// </summary>
         /// <returns></returns>
-        public bool Detect(Webpage localCopy, Webpage remoteVersion)
+        public IEnumerable<DiffPaneModel> Detect(Webpage localCopy, Webpage remoteVersion)
         {
-            CompareSitemaps(localCopy.Sitemap, remoteVersion.Sitemap);
-            CompareSources(localCopy.Components.First().SourceCode, remoteVersion.Components.Last().SourceCode);
+            //CompareSitemaps(localCopy.Sitemap, remoteVersion.Sitemap);
+            var diff = CompareSources(localCopy.Components.First().SourceCode, remoteVersion.Components.Last().SourceCode);
+            List<DiffPaneModel> diffPaneModels = new List<DiffPaneModel>();
 
-            return true;
+            foreach (var component in localCopy.Components)
+            {
+                var remoteComponent = remoteVersion.Components.Where(c => c.AbsolutePath == component.AbsolutePath).FirstOrDefault();
+                if (remoteComponent != null)
+                {
+                    var difference = CompareSources(component.SourceCode, remoteComponent.SourceCode);
+                    if (difference.Lines.Where(l => l.Type != ChangeType.Unchanged).Count() > 0)
+                        diffPaneModels.Add(difference);
+                }
+            }
+
+
+            return diffPaneModels;
         }
 
         public void Notify()

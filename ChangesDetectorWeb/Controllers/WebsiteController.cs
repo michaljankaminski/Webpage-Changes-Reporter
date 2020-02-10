@@ -7,18 +7,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ChangesDetectorWeb.Models;
 using ChangesDetector;
+using Microsoft.Extensions.Hosting;
+using ChangesDetectorWeb.Services;
 
 namespace ChangesDetectorWeb.Controllers
 {
     public class WebsiteController : Controller
     {
         private readonly ILogger<WebsiteController> _logger;
+        private readonly DetectorService _service;
         private readonly Manager _manager;
 
-        public WebsiteController(ILogger<WebsiteController> logger, Manager manager)
+        public WebsiteController(ILogger<WebsiteController> logger, Manager manager, IHostedServiceAccessor<DetectorService> accessor)
         {
             _logger = logger;
             _manager = manager;
+            _service = accessor.Service ?? throw new ArgumentNullException(nameof(accessor));
         }
 
         [HttpGet]
@@ -46,7 +50,12 @@ namespace ChangesDetectorWeb.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-       
+        [HttpGet("[controller]/[action]/{websiteId}")]
+        public IActionResult Changes(int websiteId)
+        {
+            var result = _service._changes.First();
+            return View(result);
+        }
         public IActionResult Delete(int id)
         {
             _manager.RemoveWebpage(id);

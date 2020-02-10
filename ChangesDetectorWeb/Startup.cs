@@ -21,6 +21,8 @@ namespace ChangesDetectorWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<Manager>();
+            services.AddTransient<IHostedServiceAccessor<DetectorService>, HostedServiceAccessor<DetectorService>>();
+
             services.AddHostedService<DetectorService>();
 
             services.AddControllersWithViews();

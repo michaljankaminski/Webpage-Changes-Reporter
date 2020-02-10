@@ -132,6 +132,7 @@ namespace ChangesDetector.service
         {
             var path = GetStorageFileByKey(key);
             File.WriteAllText(path.Path + "\\" + componentName, content);
+            path.FileNames.Add(componentName);
         }
 
         public string CleanFileName(string filename)
@@ -189,9 +190,15 @@ namespace ChangesDetector.service
 
         private void AddLocalFiles()
         {
-            foreach (var file in Directory.GetDirectories(PagesPath))
+            foreach (var storage in Directory.GetDirectories(PagesPath))
             {
-                AddNewStorage(file);
+                AddNewStorage(storage);
+                DirectoryInfo di = new DirectoryInfo(storage);
+
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    StoredFiles[CurrentIndex - 1].FileNames.Add(file.Name);
+                }
             }
         }
 

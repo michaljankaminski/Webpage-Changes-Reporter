@@ -4,6 +4,7 @@ using System;
 using ChangesDetector.module;
 using System.Collections.Generic;
 using ChangesDetector.model.state;
+using System.Linq;
 
 namespace ChangesDetector
 {
@@ -65,7 +66,24 @@ namespace ChangesDetector
 
         public PageChanges CheckIfWebpageHasChanged(int webpageId)
         {
-            throw new NotImplementedException();
+            var webPages = _appStateManager.GetState();
+            if (webPages != null)
+            {
+                var webPage = webPages.SavedWebpages.Where(w => w.Id == webpageId).SingleOrDefault();
+                var diff = _changesChecker.Check(webPage, new Uri(webPage.Url));
+
+                return new PageChanges
+                {
+                    Changes = diff,
+                    HasChanged = true
+                };
+            }
+
+            return new PageChanges
+            {
+                HasChanged = false,
+                Changes = null
+            };
         }
 
         public IEnumerable<SavedWebpage> GetWebpages()

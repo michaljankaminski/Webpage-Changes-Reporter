@@ -10,7 +10,7 @@ namespace ChangesDetector.module
 {
     interface IDownloader
     {
-        public Webpage Download(Uri url, string name,  bool remote);
+        public Webpage Download(Uri url, string name, bool remote);
     }
     class WebpageDownloader : IDownloader
     {
@@ -60,19 +60,20 @@ namespace ChangesDetector.module
                 yield return new WebpageComponent
                 {
                     SourceCode = subpageDocument.Text,
-                    AbsolutePath = subpageUri
+                    AbsolutePath = _fileStorage.CleanFileName(subpageUri.ToString())
                 };
             }
         }
 
-        private void SaveWebpage(Webpage webpage)
+        private void SaveWebpage(Webpage webpage, bool temp = false)
         {
+
             int key = _fileStorage.CreateNewStorage(webpage.WebpageName);
             foreach (var component in webpage.Components)
                 _fileStorage
-                   .CreateFileWithContent(key,_fileStorage.CleanFileName(component.AbsolutePath.OriginalString), component.SourceCode);
-        }
+                   .CreateFileWithContent(key, _fileStorage.CleanFileName(component.AbsolutePath.ToString()), component.SourceCode);
 
+        }
         public Webpage Download(Uri url, string webpageName, bool remote = true)
         {
             var htmlDocument = _webBrowser.Load(url);
@@ -82,7 +83,7 @@ namespace ChangesDetector.module
             {
                 new WebpageComponent
                 {
-                    AbsolutePath = url,
+                    AbsolutePath = url.ToString(),
                     SourceCode = htmlDocument.Text
                 }
             };

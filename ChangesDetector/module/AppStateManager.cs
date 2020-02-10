@@ -69,7 +69,7 @@ namespace ChangesDetector.module
         {
             State.SavedWebpages.Add(webpage);
             SaveCurrentState();
-        }
+        } 
 
         public bool RemoveSavedWebpage(int index)
         {
