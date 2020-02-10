@@ -12,10 +12,12 @@ namespace ChangesDetector
         private readonly MailConfiguration _mailConfiguration;
         private readonly AppStateManager _appStateManager;
         private readonly IDownloader _downloader;
+        private readonly IChangesChecker _changesChecker;
         public Manager()
         {
             _appStateManager = new AppStateManager();
             _downloader = new WebpageDownloader();
+            _changesChecker = new ChangesChecker(_downloader);
 
             Configure(out _mailConfiguration);
         }
@@ -61,7 +63,7 @@ namespace ChangesDetector
                 return false;
         }
 
-        public PageChanges CheckIfWebpageHasChanged(int webpageId, string tempPath)
+        public PageChanges CheckIfWebpageHasChanged(int webpageId)
         {
             throw new NotImplementedException();
         }

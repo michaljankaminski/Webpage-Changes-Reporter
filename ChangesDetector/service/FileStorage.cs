@@ -10,6 +10,7 @@ namespace ChangesDetector.service
     public interface IFileStorage
     {
         IList<StorageFile> GetStorages();
+        StorageFile GetStorageFileByKey(int key);
         bool AddNewStorage(string path);
         bool RemoveStorage(int key);
         int GetNumberOfStorages();
@@ -194,7 +195,7 @@ namespace ChangesDetector.service
             }
         }
 
-        private StorageFile GetStorageFileByKey(int key)
+        public StorageFile GetStorageFileByKey(int key)
         {
             foreach (var storage in StoredFiles)
             {
