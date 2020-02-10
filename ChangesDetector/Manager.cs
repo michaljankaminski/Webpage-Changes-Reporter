@@ -2,12 +2,14 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using ChangesDetector.module;
+using System.Collections.Generic;
 
 namespace ChangesDetector
 {
     public class Manager
     {
         private readonly MailConfiguration _mailConfiguration;
+       
         public Manager()
         {
             Configure(out _mailConfiguration);
@@ -31,14 +33,22 @@ namespace ChangesDetector
             };
         }
 
-        public bool AddNewWebpageToReport()
+        public bool AddNewWebpageToReport(Uri url)
         {
+            IDownloader downloader = new WebpageDownloader();
+            downloader.Download(url, false);
+
             throw new NotImplementedException();
         }
 
         public bool CheckIfWebpageHasChanged()
         {
             throw new NotImplementedException();
+        }
+        
+        public IEnumerable<Webpage> GetWebpages()
+        {
+            return new List<Webpage>();
         }
 
 

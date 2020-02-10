@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    int i = 1;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Witaj</h1>
+    
+    <div class="row mt-3">
+        <h3>Lista obserwowanych stron</h3>
+        <div class="col-lg-10">
+            <table class="table table-hover">
+                <tr>
+                    <th>Lp. </th>
+                    <th>Nazwa strony</th>
+                    <th>Adres url</th>
+                    <th>Stan</th>
+                    <th></th>
+                </tr>
+                @foreach(var el in ViewData["webpages"] as IList<ChangesDetector.model.Webpage>)
+                {
+                    <tr>
+                        <th>@i</th>
+                        <th>@el.WebpageName</th>
+                        <th>@el.WebpageUrl</th>
+                        <th></th>
+                        <th>
+                            <a class="btn btn-danger" asp-controller="Website" asp-action="Delete" asp-route-name="@el.WebpageName">Usuń</a>
+                        </th>
+                    </tr>
+                    i = i + 1; 
+                }
+            </table>
+        </div>
+        <div class="col-lg-2">
+            <a class="btn btn-light" asp-controller="Website" asp-action="Add">Dodaj nową</a>
+        </div>
+    </div>
+</div>

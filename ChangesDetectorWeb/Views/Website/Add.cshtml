@@ -1,0 +1,38 @@
+﻿@model ChangesDetector.model.Webpage
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+<h4>Webpage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add" method="post" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="WebpageName" class="control-label"></label>
+                <input asp-for="WebpageName" class="form-control" />
+                <span asp-validation-for="WebpageName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WebpageUrl" class="control-label"></label>
+                <input asp-for="WebpageUrl" class="form-control" />
+                <span asp-validation-for="WebpageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
