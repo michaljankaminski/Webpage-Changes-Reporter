@@ -166,12 +166,24 @@ namespace ChangesDetector.service
 
         public string CreateTempFolder()
         {
-            throw new NotImplementedException();
+            var guid = new Guid();
+            var newPath = TempPath + guid.ToString() + "\\";
+            Directory.CreateDirectory(newPath);
+            return newPath;
         }
 
         public void CleanTempFolder()
         {
-            throw new NotImplementedException();
+            DirectoryInfo di = new DirectoryInfo(TempPath);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
         }
 
         private void AddLocalFiles()
