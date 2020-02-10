@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ChangesDetector.module;
+﻿using ChangesDetector.model.state;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using ChangesDetector.model.state;
+using ChangesDetector.module;
 
-namespace ChangesDetector.module.Tests
+namespace ChangesDetectorTests.module
 {
     [TestClass()]
     public class AppStateManagerTests
