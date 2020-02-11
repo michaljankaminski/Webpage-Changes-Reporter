@@ -13,6 +13,7 @@ namespace ChangesDetector.module
         AppStateConfiguration GetState();
         void AddSavedWebpage(SavedWebpage webpage);
         bool RemoveSavedWebpage(int index);
+        void UpdateDate(int id);
     }
 
     public class AppStateManager : IAppStateManager
@@ -37,7 +38,14 @@ namespace ChangesDetector.module
                 ReadState(stateContent);
             }
         }
+        public void UpdateDate(int id)
+        {
+            var item = State.SavedWebpages.Where(s => s.Id == id).FirstOrDefault();
+            if (item != null)
+                item.LastUpdate = DateTime.Now;
 
+            SaveCurrentState();
+        }
         public bool SaveCurrentState(AppStateConfiguration state = null)
         {
             if (state == null)
@@ -77,7 +85,11 @@ namespace ChangesDetector.module
             {
                 var item = State.SavedWebpages.Where(s => s.Id == index).SingleOrDefault();
                 if (item != null)
+                {
                     State.SavedWebpages.Remove(item);
+                    SaveCurrentState();
+                }
+
 
                 return true;
             }

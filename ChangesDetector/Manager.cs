@@ -16,11 +16,12 @@ namespace ChangesDetector
         private readonly IChangesChecker _changesChecker;
         public Manager()
         {
+            Configure(out _mailConfiguration);
+
             _appStateManager = new AppStateManager();
             _downloader = new WebpageDownloader();
-            _changesChecker = new ChangesChecker(_downloader);
+            _changesChecker = new ChangesChecker(_downloader,_mailConfiguration);
 
-            Configure(out _mailConfiguration);
         }
 
         public void Configure(out MailConfiguration mailConfiguration)
@@ -63,7 +64,10 @@ namespace ChangesDetector
             else
                 return false;
         }
-
+        public void UpdateWebpage(int id)
+        {
+            _appStateManager.UpdateDate(id);
+        }
         public PageChanges CheckIfWebpageHasChanged(int webpageId)
         {
             var webPages = _appStateManager.GetState();
@@ -85,7 +89,7 @@ namespace ChangesDetector
                 Changes = null
             };
         }
-
+  
         public IEnumerable<SavedWebpage> GetWebpages()
         {
             var result = _appStateManager.GetState();

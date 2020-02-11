@@ -10,17 +10,18 @@ namespace ChangesDetector.module
 {
     interface IDetector
     {
-        public IEnumerable<DiffPaneModel> Detect(Webpage localCopy, Webpage remoteVersion);
-        public void Notify();
+        public IDictionary<string, SideBySideDiffModel> Detect(Webpage localCopy, Webpage remoteVersion);
     }
     class Detector : IDetector
     {
+        private readonly IEmailReporter _emailReporter;
         private readonly IDiffer _differ;
-        private readonly IInlineDiffBuilder _inlineDiffBuilder;
-        public Detector()
+        private readonly ISideBySideDiffBuilder _sideBySideDiffBuilder;
+        public Detector(MailConfiguration mailConfiguration)
         {
+            _emailReporter = new EmailReporter(mailConfiguration);
             _differ = new Differ();
-            _inlineDiffBuilder = new InlineDiffBuilder(_differ);
+            _sideBySideDiffBuilder = new SideBySideDiffBuilder(_differ);
         }
         /// <summary>
         /// First step is comparing the sitemaps
@@ -49,9 +50,9 @@ namespace ChangesDetector.module
         /// </summary>
         /// <param name="localCopy"></param>
         /// <param name="remoteCopy"></param>
-        private DiffPaneModel CompareSources(string localCopy, string remoteCopy)
+        private SideBySideDiffModel CompareSources(string localCopy, string remoteCopy)
         {
-            var diff = _inlineDiffBuilder.BuildDiffModel(localCopy, remoteCopy);
+            var diff = _sideBySideDiffBuilder.BuildDiffModel(localCopy, remoteCopy);
 
             return diff;
             //foreach (var line in diff.Lines)
@@ -87,30 +88,41 @@ namespace ChangesDetector.module
         /// changes between to complete versions of webpage
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<DiffPaneModel> Detect(Webpage localCopy, Webpage remoteVersion)
+        public IDictionary<string, SideBySideDiffModel> Detect(Webpage localCopy, Webpage remoteVersion)
         {
             //CompareSitemaps(localCopy.Sitemap, remoteVersion.Sitemap);
             var diff = CompareSources(localCopy.Components.First().SourceCode, remoteVersion.Components.Last().SourceCode);
-            List<DiffPaneModel> diffPaneModels = new List<DiffPaneModel>();
+            IDictionary<string, SideBySideDiffModel> diffPaneModels = new Dictionary<string, SideBySideDiffModel>();
 
             foreach (var component in localCopy.Components)
             {
-                var remoteComponent = remoteVersion.Components.Where(c => c.AbsolutePath == component.AbsolutePath).FirstOrDefault();
+                var remoteComponent = remoteVersion.Components.Where(c => c.AbsolutePath.Equals(component.AbsolutePath)).FirstOrDefault();
                 if (remoteComponent != null)
                 {
                     var difference = CompareSources(component.SourceCode, remoteComponent.SourceCode);
-                    if (difference.Lines.Where(l => l.Type != ChangeType.Unchanged).Count() > 0)
-                        diffPaneModels.Add(difference);
+                    var diff2 = difference.NewText.Lines.Where(l => l.Type != ChangeType.Unchanged);
+                    if (difference.NewText.Lines.Where(l => l.Type != ChangeType.Unchanged).Count() > 0)
+                    {
+                        diffPaneModels.Add(new KeyValuePair<string, SideBySideDiffModel>
+                        (
+                           component.AbsolutePath,
+                             difference
+                        ));
+                        Notify(localCopy.WebpageName, localCopy.WebpageUrl);
+                    }
+
                 }
             }
-
 
             return diffPaneModels;
         }
 
-        public void Notify()
+        private void Notify(string name, string url)
         {
-            throw new NotImplementedException();
+            string title = "Changes found: " + name;
+            string body = String.Format("Witaj <br/> Wykryto zmiany na stronie {0}, <br /> Adres url: {1} <br /> Wygenerowano: {2}", name, url, DateTime.Now);
+            List<string> rec = new List<string> { "m.ferfet@ponowemu.pl" };
+            _emailReporter.SendMail(title, body, rec);
         }
     }
 }

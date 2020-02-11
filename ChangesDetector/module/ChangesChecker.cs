@@ -10,7 +10,7 @@ namespace ChangesDetector.module
 {
     interface IChangesChecker
     {
-        IEnumerable<DiffPaneModel> Check(SavedWebpage webpage, Uri url);
+        IDictionary<string, SideBySideDiffModel> Check(SavedWebpage webpage, Uri url);
     }
     class ChangesChecker : IChangesChecker
     {
@@ -18,10 +18,10 @@ namespace ChangesDetector.module
         private readonly IDetector _detector;
         private readonly IFileStorage _fileStorage;
 
-        public ChangesChecker(IDownloader downloader)
+        public ChangesChecker(IDownloader downloader, MailConfiguration mailConfiguration)
         {
             _downloader = downloader;
-            _detector = new Detector();
+            _detector = new Detector(mailConfiguration);
             _fileStorage = new FileStorage();
         }
         private Webpage ConvertToWebpage(SavedWebpage webpage)
@@ -46,7 +46,7 @@ namespace ChangesDetector.module
             };
 
         }
-        public IEnumerable<DiffPaneModel> Check(SavedWebpage webpage, Uri url)
+        public IDictionary<string, SideBySideDiffModel> Check(SavedWebpage webpage, Uri url)
         {
             var tempWebpage = _downloader.Download(url, String.Empty, true);
             var originalWebpage = ConvertToWebpage(webpage);

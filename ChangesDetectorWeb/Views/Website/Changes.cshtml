@@ -1,48 +1,36 @@
 ﻿@model ChangesDetector.model.PageChanges
-
-<div id="diffBox">
-    <div id="col-lg-6" style="font-size:9px;">
-        @foreach (var page in Model.Changes)
+@{int i = 1; }
+<div class="row">
+    <h4>Znalezione zmiany na stronie</h4>
+</div>
+<div class="row">
+    <div id="col-lg-12" style="margin-right:auto; margin-left:auto">
+        @if (Model != null && Model.Changes.Count() > 0)
         {
             <div class="row">
-                <div class="col-lg-12">
-                    @foreach (var line in page.Lines)
+                <table class="table table-hover">
+                    @foreach (KeyValuePair<string, DiffPlex.DiffBuilder.Model.SideBySideDiffModel> el in Model.Changes)
                     {
-                        @if (!string.IsNullOrEmpty(line.Text))
-                        {
-                            string spaceValue = "\u00B7";
-                            string tabValue = "\u00B7\u00B7";
-                            if (line.Type == DiffPlex.DiffBuilder.Model.ChangeType.Deleted || line.Type == DiffPlex.DiffBuilder.Model.ChangeType.Inserted || line.Type == DiffPlex.DiffBuilder.Model.ChangeType.Unchanged)
-                            {
-                                if (line.Type == DiffPlex.DiffBuilder.Model.ChangeType.Deleted)
-                                {
-                                    <span style="float:left; width:100%; background-color:#ff0000">@Html.Raw(Html.Encode(line.Text).Replace(" ", spaceValue).Replace("\t", tabValue))</span>
-
-                                }
-                                else
-                                {
-                                    <span style="float:left; width:100%; background-color:#808080">@Html.Raw(Html.Encode(line.Text).Replace(" ", spaceValue).Replace("\t", tabValue))</span>
-
-                                }
-
-                            }
-                            else if (line.Type == DiffPlex.DiffBuilder.Model.ChangeType.Modified)
-                            {
-                                foreach (var character in line.SubPieces)
-                                {
-                                    if (character.Type == DiffPlex.DiffBuilder.Model.ChangeType.Imaginary) { continue; }
-
-                                    <span class="@character.Type.ToString()Character piece">@character.Text.Replace(" ", spaceValue.ToString())</span>
-                                }
-                            }
-
-                        }
+                        <tr>
+                            <td>@i</td>
+                            <td>@el.Key</td>
+                            <td>
+                                <a class="btn-info btn" asp-controller="Website" asp-action="Diff" asp-route-websiteId="@Model.websiteId" asp-route-index="@i">Podgląd</a>
+                            </td>
+                        </tr>
+                        i++;
                     }
-                </div>
+                </table>
+            </div>
+
+        }
+        else
+        {
+            <div class="row">
+                <h4 style="color:#ff6a00">No changes data found</h4>
             </div>
         }
+
     </div>
 
-    <div class="clear">
-    </div>
 </div>

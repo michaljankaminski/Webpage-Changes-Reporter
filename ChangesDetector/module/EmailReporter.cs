@@ -11,7 +11,7 @@ namespace ChangesDetector.module
 {
     interface IEmailReporter: IReporter
     {
-
+        bool SendMail(string sub, string body, IEnumerable<string> destEmails);
     }
     public class EmailReporter : IEmailReporter
     {

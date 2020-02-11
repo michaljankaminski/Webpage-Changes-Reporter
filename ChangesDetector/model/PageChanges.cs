@@ -5,7 +5,8 @@ namespace ChangesDetector.model
 {
     public class PageChanges
     {
-        public IEnumerable<DiffPaneModel> Changes { get; set; }
+        public int websiteId { get; set; }
+        public IDictionary<string, SideBySideDiffModel> Changes { get; set; }
         public bool HasChanged = false;
     }
 }

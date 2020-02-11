@@ -76,10 +76,12 @@ namespace ChangesDetector.module
         }
         public Webpage Download(Uri url, string webpageName, bool remote = true)
         {
-            var htmlDocument = _webBrowser.Load(url);
-            var siteMap = GetSiteMap(htmlDocument);
+            try
+            {
+                var htmlDocument = _webBrowser.Load(url);
+                var siteMap = GetSiteMap(htmlDocument);
 
-            IList<WebpageComponent> components = new List<WebpageComponent>
+                IList<WebpageComponent> components = new List<WebpageComponent>
             {
                 new WebpageComponent
                 {
@@ -88,21 +90,27 @@ namespace ChangesDetector.module
                 }
             };
 
-            foreach (var component in GetWebpageComponents(url, siteMap))
-                components.Add(component);
+                foreach (var component in GetWebpageComponents(url, siteMap))
+                    components.Add(component);
 
-            var wp = new Webpage
+                var wp = new Webpage
+                {
+                    Components = components,
+                    WebpageUrl = url.AbsoluteUri,
+                    Sitemap = siteMap,
+                    WebpageName = webpageName
+                };
+
+                if (!remote)
+                    SaveWebpage(wp);
+
+                return wp;
+            }
+            catch(Exception ex)
             {
-                Components = components,
-                WebpageUrl = url.AbsoluteUri,
-                Sitemap = siteMap,
-                WebpageName = webpageName
-            };
-
-            if (!remote)
-                SaveWebpage(wp);
-
-            return wp;
+                Console.WriteLine("Error in downloading");
+                return new Webpage();
+            }
         }
     }
 }

@@ -15,6 +15,7 @@
                     <th>Nazwa strony</th>
                     <th>Adres url</th>
                     <th>Ostatnia aktualizacja</th>
+                    <th>Włączony</th>
                     <th></th>
                 </tr>
                 @foreach(var el in ViewData["webpages"] as IList<ChangesDetector.model.state.SavedWebpage>)
@@ -24,7 +25,9 @@
                         <th>@el.Name</th>
                         <th>@el.Url</th>
                         <th>@el.LastUpdate</th>
+                        <th>@el.Active</th>
                         <th>
+                            <a class="btn btn-dark" asp-controller="Website" asp-action="Changes" asp-route-websiteId="@el.Id">Podejrzyj</a>
                             <a class="btn btn-danger" asp-controller="Website" asp-action="Delete" asp-route-id="@el.Id">Usuń</a>
                         </th>
                     </tr>

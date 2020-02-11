@@ -31,16 +31,16 @@ namespace ChangesDetectorWeb.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Add(string name, string url, int updateFrequency)
+        public IActionResult Add(string name, string url, int updateFrequency, bool active)
         {
-            int id = 1;
-            var lastItem = _manager.GetWebpages().LastOrDefault();
+            int id = 0;
+            var lastItem = _manager.GetWebpages().OrderByDescending(a => a.Id).FirstOrDefault();
             if (lastItem != null)
                 id = lastItem.Id + 1;
 
             _manager.AddNewWebpageToReport(new ChangesDetector.model.state.SavedWebpage
             {
-                Active = true,
+                Active = active,
                 Name = name,
                 Id = id,
                 Url = url,
@@ -50,11 +50,21 @@ namespace ChangesDetectorWeb.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        [HttpGet("[controller]/[action]/{websiteId}")]
+        [HttpGet("[controller]/[action]/{websiteId}/")]
         public IActionResult Changes(int websiteId)
         {
-            var result = _service._changes.First();
-            return View(result);
+
+            var result = _service._changes.Where(c => c.websiteId == websiteId).SingleOrDefault();
+            if (result != null)
+                return View(result);
+            else
+                return View();
+        }
+        public IActionResult Diff(int websiteId, int index)
+        {
+            var result = _service._changes.Where(c => c.websiteId == websiteId).SingleOrDefault();
+            var temp = result.Changes.ElementAt(index - 1);
+            return View(temp);
         }
         public IActionResult Delete(int id)
         {

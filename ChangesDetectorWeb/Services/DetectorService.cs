@@ -1,5 +1,6 @@
 ﻿using ChangesDetector;
 using ChangesDetector.model;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,28 +12,49 @@ namespace ChangesDetectorWeb.Services
 {
     public class DetectorService : BackgroundService
     {
-        private readonly Manager _manager;
+        private readonly IServiceScopeFactory _scopeFactory;
+        private int Time = 10000;
         public IList<PageChanges> _changes { get; set; }
-        public DetectorService(Manager manager)
+        public DetectorService(IServiceScopeFactory scopeFactory)
         {
-            _manager = manager;
+            _scopeFactory = scopeFactory;
             _changes = new List<PageChanges>();
         }
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var webpages = _manager.GetWebpages();
-                foreach(var el in webpages)
+                using (var scope = _scopeFactory.CreateScope())
                 {
-                    if(el.Active == true)
+                    var context = scope.ServiceProvider.GetRequiredService<Manager>();
+                    var webpages = context.GetWebpages();
+                    if (webpages.Count() > 0)
                     {
-                        var res = _manager.CheckIfWebpageHasChanged(el.Id);
-                        _changes.Add(res);
+                        foreach (var el in webpages)
+                        {
+                            if (el.Active == true)
+                            {
+                                var res = context.CheckIfWebpageHasChanged(el.Id);
+                                if(res != null)
+                                {
+                                    res.websiteId = el.Id;
+                                    
+                                    var temp = _changes.FirstOrDefault(t => t.websiteId == el.Id);
+                                    if (temp != null)
+                                        _changes.Remove(temp);
+
+                                    _changes.Add(res);
+                                    context.UpdateWebpage(el.Id);
+                                }
+                            }
+                        }
                     }
+                    var first = webpages.FirstOrDefault();
+                    if(first!=null)
+                        Time = first.UpdateFrequency*1000;
                 }
-                await Task.Delay(2000);
-            }   
+                await Task.Delay(Time);
+            }
         }
     }
 }
