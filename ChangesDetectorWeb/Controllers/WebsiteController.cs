@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ChangesDetector;
+using ChangesDetectorWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ChangesDetectorWeb.Models;
-using ChangesDetector;
-using Microsoft.Extensions.Hosting;
-using ChangesDetectorWeb.Services;
+using System;
+using System.Linq;
 
 namespace ChangesDetectorWeb.Controllers
 {
@@ -30,6 +25,7 @@ namespace ChangesDetectorWeb.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult Add(string name, string url, int updateFrequency, bool active)
         {
@@ -50,22 +46,25 @@ namespace ChangesDetectorWeb.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
         [HttpGet("[controller]/[action]/{websiteId}/")]
         public IActionResult Changes(int websiteId)
         {
 
-            var result = _service._changes.Where(c => c.websiteId == websiteId).SingleOrDefault();
+            var result = _service._changes.Where(c => c.WebsiteId == websiteId).SingleOrDefault();
             if (result != null)
                 return View(result);
             else
                 return View();
         }
+
         public IActionResult Diff(int websiteId, int index)
         {
-            var result = _service._changes.Where(c => c.websiteId == websiteId).SingleOrDefault();
+            var result = _service._changes.Where(c => c.WebsiteId == websiteId).SingleOrDefault();
             var temp = result.Changes.ElementAt(index - 1);
             return View(temp);
         }
+
         public IActionResult Delete(int id)
         {
             _manager.RemoveWebpage(id);

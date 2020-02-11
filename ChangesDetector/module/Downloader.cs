@@ -12,6 +12,7 @@ namespace ChangesDetector.module
     {
         public Webpage Download(Uri url, string name, bool remote);
     }
+
     class WebpageDownloader : IDownloader
     {
         private readonly HtmlWeb _webBrowser;
@@ -40,6 +41,7 @@ namespace ChangesDetector.module
             else
                 return false;
         }
+
         private IEnumerable<string> GetSiteMap(HtmlDocument mainPage)
         {
             IList<HtmlNode> siteMap = new List<HtmlNode>();
@@ -50,6 +52,7 @@ namespace ChangesDetector.module
 
             return siteMap.Select(n => n.Attributes["href"].Value).Distinct();
         }
+
         private IEnumerable<WebpageComponent> GetWebpageComponents(Uri baseUrl, IEnumerable<string> siteMap)
         {
             foreach (var singleLink in siteMap)
@@ -67,13 +70,13 @@ namespace ChangesDetector.module
 
         private void SaveWebpage(Webpage webpage, bool temp = false)
         {
-
             int key = _fileStorage.CreateNewStorage(webpage.WebpageName);
+
             foreach (var component in webpage.Components)
                 _fileStorage
                    .CreateFileWithContent(key, _fileStorage.CleanFileName(component.AbsolutePath.ToString()), component.SourceCode);
-
         }
+
         public Webpage Download(Uri url, string webpageName, bool remote = true)
         {
             try
@@ -82,13 +85,13 @@ namespace ChangesDetector.module
                 var siteMap = GetSiteMap(htmlDocument);
 
                 IList<WebpageComponent> components = new List<WebpageComponent>
-            {
-                new WebpageComponent
                 {
-                    AbsolutePath = url.ToString(),
-                    SourceCode = htmlDocument.Text
-                }
-            };
+                    new WebpageComponent
+                    {
+                        AbsolutePath = url.ToString(),
+                        SourceCode = htmlDocument.Text
+                    }
+                };
 
                 foreach (var component in GetWebpageComponents(url, siteMap))
                     components.Add(component);

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ChangesDetector;
+using ChangesDetectorWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ChangesDetectorWeb.Models;
-using ChangesDetector;
+using System.Diagnostics;
 
 namespace ChangesDetectorWeb.Controllers
 {
@@ -20,6 +16,7 @@ namespace ChangesDetectorWeb.Controllers
             _logger = logger;
             _manager = manager;
         }
+
         public IActionResult Index()
         {
             ViewData["webpages"] = _manager.GetWebpages();

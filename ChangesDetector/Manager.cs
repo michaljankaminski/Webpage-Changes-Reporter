@@ -14,6 +14,7 @@ namespace ChangesDetector
         private readonly AppStateManager _appStateManager;
         private readonly IDownloader _downloader;
         private readonly IChangesChecker _changesChecker;
+
         public Manager()
         {
             Configure(out _mailConfiguration);

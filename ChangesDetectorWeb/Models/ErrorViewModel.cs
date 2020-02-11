@@ -1,5 +1,3 @@
-using System;
-
 namespace ChangesDetectorWeb.Models
 {
     public class ErrorViewModel

@@ -4,7 +4,6 @@ using ChangesDetector.service;
 using DiffPlex.DiffBuilder.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ChangesDetector.module
 {
@@ -24,6 +23,7 @@ namespace ChangesDetector.module
             _detector = new Detector(mailConfiguration);
             _fileStorage = new FileStorage();
         }
+
         private Webpage ConvertToWebpage(SavedWebpage webpage)
         {
             List<WebpageComponent> webpageComponents = new List<WebpageComponent>();
@@ -44,8 +44,8 @@ namespace ChangesDetector.module
                 WebpageUrl = webpage.Url,
                 Components = webpageComponents,
             };
-
         }
+
         public IDictionary<string, SideBySideDiffModel> Check(SavedWebpage webpage, Uri url)
         {
             var tempWebpage = _downloader.Download(url, String.Empty, true);

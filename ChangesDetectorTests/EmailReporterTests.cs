@@ -11,6 +11,7 @@ namespace ChangesDetectorTests
     public class EmailReporterTests
     {
         private readonly EmailReporter _emailReporter;
+
         public EmailReporterTests()
         {
             var configuration = new ConfigurationBuilder()

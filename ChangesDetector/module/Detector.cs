@@ -55,25 +55,6 @@ namespace ChangesDetector.module
             var diff = _sideBySideDiffBuilder.BuildDiffModel(localCopy, remoteCopy);
 
             return diff;
-            //foreach (var line in diff.Lines)
-            //{
-            //    switch (line.Type)
-            //    {
-            //        case ChangeType.Inserted:
-            //            Console.ForegroundColor = ConsoleColor.Green;
-            //            Console.Write("+++ ");
-            //            break;
-            //        case ChangeType.Deleted:
-            //            Console.ForegroundColor = ConsoleColor.Red;
-            //            Console.Write("--- ");
-            //            break;
-            //        default:
-            //            Console.ForegroundColor = ConsoleColor.Yellow;
-            //            Console.Write("  ");
-            //            break;
-            //    }
-            //    Console.WriteLine(line.Text);
-            //}
         }
         /// <summary>
         /// Method for comparing the http headers obtained
@@ -113,7 +94,6 @@ namespace ChangesDetector.module
 
                 }
             }
-
             return diffPaneModels;
         }
 

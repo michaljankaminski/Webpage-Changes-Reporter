@@ -10,10 +10,12 @@ namespace ChangesDetectorTests.module
     public class AppStateManagerTests
     {
         private readonly AppStateManager _appStateManager;
+
         public AppStateManagerTests()
         {
             _appStateManager = new AppStateManager();
         }
+
         [TestMethod()]
         public void SaveCurrentStateTest()
         {

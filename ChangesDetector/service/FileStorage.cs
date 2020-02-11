@@ -163,7 +163,6 @@ namespace ChangesDetector.service
             {
                 throw;
             }
-
         }
 
         public string CreateTempFolder()

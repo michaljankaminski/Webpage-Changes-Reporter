@@ -1,9 +1,7 @@
 ﻿using ChangesDetector;
 using ChangesDetector.model;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,11 +13,13 @@ namespace ChangesDetectorWeb.Services
         private readonly IServiceScopeFactory _scopeFactory;
         private int Time = 10000;
         public IList<PageChanges> _changes { get; set; }
+
         public DetectorService(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
             _changes = new List<PageChanges>();
         }
+
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -28,6 +28,7 @@ namespace ChangesDetectorWeb.Services
                 {
                     var context = scope.ServiceProvider.GetRequiredService<Manager>();
                     var webpages = context.GetWebpages();
+
                     if (webpages.Count() > 0)
                     {
                         foreach (var el in webpages)
@@ -37,9 +38,9 @@ namespace ChangesDetectorWeb.Services
                                 var res = context.CheckIfWebpageHasChanged(el.Id);
                                 if(res != null)
                                 {
-                                    res.websiteId = el.Id;
+                                    res.WebsiteId = el.Id;
                                     
-                                    var temp = _changes.FirstOrDefault(t => t.websiteId == el.Id);
+                                    var temp = _changes.FirstOrDefault(t => t.WebsiteId == el.Id);
                                     if (temp != null)
                                         _changes.Remove(temp);
 

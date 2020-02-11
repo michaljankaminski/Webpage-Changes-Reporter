@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ChangesDetector.model
+﻿namespace ChangesDetector.model
 {
     public class WebpageComponent
     {

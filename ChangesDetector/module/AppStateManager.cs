@@ -114,6 +114,7 @@ namespace ChangesDetector.module
                     if (storage.Name == wp.Name)
                     {
                         wp.Id = storage.Key;
+                        break;
                     }
                 }   
             }

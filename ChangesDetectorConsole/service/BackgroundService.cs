@@ -18,6 +18,7 @@ namespace ChangesDetectorConsole.service
         {
             _stoppingCts.Cancel();
         }
+
         public virtual Task StartAsync(CancellationToken cancellationToken)
         {
             _executingTask = ExecuteAsync(_stoppingCts.Token);
@@ -27,6 +28,7 @@ namespace ChangesDetectorConsole.service
             
             return Task.CompletedTask;
         }
+
         public virtual async Task StopAsync(CancellationToken cancellationToken)
         {
             // Stop called without start
