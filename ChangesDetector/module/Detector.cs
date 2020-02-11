@@ -12,11 +12,13 @@ namespace ChangesDetector.module
     {
         public IDictionary<string, SideBySideDiffModel> Detect(Webpage localCopy, Webpage remoteVersion);
     }
+
     class Detector : IDetector
     {
         private readonly IEmailReporter _emailReporter;
         private readonly IDiffer _differ;
         private readonly ISideBySideDiffBuilder _sideBySideDiffBuilder;
+
         public Detector(MailConfiguration mailConfiguration)
         {
             _emailReporter = new EmailReporter(mailConfiguration);
