@@ -1,0 +1,19 @@
+﻿@model KeyValuePair<string,DiffPlex.DiffBuilder.Model.SideBySideDiffModel>
+
+
+<div class="row">
+    <div id="diffBox">
+        <div id="leftPane">
+            <div class="diffHeader">Lokalna kopia</div>
+
+            @Html.Partial("DiffPane", Model.Value.OldText)
+        </div>
+        <div id="rightPane">
+            <div class="diffHeader">Nowy zdalny plik</div>
+            @Html.Partial("DiffPane", Model.Value.NewText)
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+

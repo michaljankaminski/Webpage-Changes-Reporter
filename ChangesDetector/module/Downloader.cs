@@ -10,7 +10,7 @@ namespace ChangesDetector.module
 {
     interface IDownloader
     {
-        public Webpage Download(Uri url, bool remote);
+        public Webpage Download(Uri url, string name, bool remote);
     }
     class WebpageDownloader : IDownloader
     {
@@ -60,46 +60,57 @@ namespace ChangesDetector.module
                 yield return new WebpageComponent
                 {
                     SourceCode = subpageDocument.Text,
-                    AbsolutePath = subpageUri
+                    AbsolutePath = _fileStorage.CleanFileName(subpageUri.ToString())
                 };
             }
         }
 
-        private void SaveWebpage(Webpage webpage)
+        private void SaveWebpage(Webpage webpage, bool temp = false)
         {
+
+            int key = _fileStorage.CreateNewStorage(webpage.WebpageName);
             foreach (var component in webpage.Components)
                 _fileStorage
-                   .CreateFileWithContent(_fileStorage.CleanFileName(component.AbsolutePath.OriginalString), component.SourceCode);
+                   .CreateFileWithContent(key, _fileStorage.CleanFileName(component.AbsolutePath.ToString()), component.SourceCode);
+
         }
-
-        public Webpage Download(Uri url, bool remote = true)
+        public Webpage Download(Uri url, string webpageName, bool remote = true)
         {
-            var htmlDocument = _webBrowser.Load(url);
-            var siteMap = GetSiteMap(htmlDocument);
+            try
+            {
+                var htmlDocument = _webBrowser.Load(url);
+                var siteMap = GetSiteMap(htmlDocument);
 
-            IList<WebpageComponent> components = new List<WebpageComponent>
+                IList<WebpageComponent> components = new List<WebpageComponent>
             {
                 new WebpageComponent
                 {
-                    AbsolutePath = url,
+                    AbsolutePath = url.ToString(),
                     SourceCode = htmlDocument.Text
                 }
             };
 
-            foreach (var component in GetWebpageComponents(url, siteMap))
-                components.Add(component);
+                foreach (var component in GetWebpageComponents(url, siteMap))
+                    components.Add(component);
 
-            var wp = new Webpage
+                var wp = new Webpage
+                {
+                    Components = components,
+                    WebpageUrl = url.AbsoluteUri,
+                    Sitemap = siteMap,
+                    WebpageName = webpageName
+                };
+
+                if (!remote)
+                    SaveWebpage(wp);
+
+                return wp;
+            }
+            catch(Exception ex)
             {
-                Components = components,
-                WebpageUrl = url.AbsoluteUri,
-                Sitemap = siteMap
-            };
-
-            if (!remote)
-                SaveWebpage(wp);
-
-            return wp;
+                Console.WriteLine("Error in downloading");
+                return new Webpage();
+            }
         }
     }
 }

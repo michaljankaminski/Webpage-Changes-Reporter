@@ -2,8 +2,9 @@
 
 namespace ChangesDetector.model
 {
-    class Webpage
+    public class Webpage
     {
+        public string WebpageName { get; set; }
         public string WebpageUrl { get; set; }
         public IEnumerable<Header> Headers { get; set; }
         public IEnumerable<string> Sitemap { get; set; }
